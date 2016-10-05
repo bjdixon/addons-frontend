@@ -10,31 +10,37 @@ import SearchResult from './SearchResult';
 
 class SearchResults extends React.Component {
   static propTypes = {
+    ResultComponent: PropTypes.object.isRequired,
+    app: PropTypes.string,
+    category: PropTypes.string,
     count: PropTypes.number,
     i18n: PropTypes.object.isRequired,
     lang: PropTypes.string.isRequired,
     loading: PropTypes.bool,
     query: PropTypes.string,
     results: PropTypes.arrayOf(PropTypes.object),
-    ResultComponent: PropTypes.object.isRequired,
+    type: PropTypes.string,
   }
 
   static defaultProps = {
+    // app: null,
+    // category: null,
     count: 0,
     query: null,
     ResultComponent: SearchResult,
     results: [],
+    // type: null,
   }
 
   render() {
-    const { ResultComponent, count, i18n, lang, loading, query,
-            results } = this.props;
+    const { ResultComponent, app, category, count, i18n, lang, loading, query,
+            results, type } = this.props;
 
     let searchResults;
     let messageText;
     let hideMessageText = false;
 
-    if (query && count > 0) {
+    if (count > 0) {
       hideMessageText = true;
       messageText = i18n.sprintf(
         i18n.ngettext(
@@ -52,7 +58,7 @@ class SearchResults extends React.Component {
           ))}
         </ul>
       );
-    } else if (query && loading) {
+    } else if (loading) {
       messageText = i18n.gettext('Searching...');
     } else if (query && results.length === 0) {
       messageText = i18n.sprintf(

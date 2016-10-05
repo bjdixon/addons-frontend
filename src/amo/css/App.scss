@@ -26,6 +26,10 @@ body {
   line-height: 19px;
 }
 
+.amo {
+  padding-bottom: 1em;
+}
+
 h1,
 h2 {
   @include font-bold();
