@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 
 import SearchForm from 'amo/components/SearchForm';
 import translate from 'core/i18n/translate';
@@ -9,6 +10,7 @@ import './MastHead.scss';
 
 export class MastHeadBase extends React.Component {
   static propTypes = {
+    application: PropTypes.string.isRequired,
     children: PropTypes.node,
     i18n: PropTypes.object.isRequired,
     isHomePage: PropTypes.bool,
@@ -23,10 +25,10 @@ export class MastHeadBase extends React.Component {
   }
 
   render() {
-    const { SearchFormComponent, children, i18n, isHomePage, lang,
+    const { SearchFormComponent, application, children, i18n, isHomePage, lang,
             query } = this.props;
     const headerTitle = i18n.gettext('Firefox Add-ons');
-    const pathname = `/${lang}/firefox/search/`;
+    const pathname = `/${lang}/${application}/search/`;
 
     return (
       <div className="MastHead">
@@ -38,10 +40,14 @@ export class MastHeadBase extends React.Component {
           { isHomePage ?
             <h1 ref={(ref) => { this.title = ref; }}
                 className="MastHead-title MastHead-homepage">
-              { headerTitle }
+              {headerTitle}
             </h1> :
-            <a ref={(ref) => { this.title = ref; }}
-               href="/" className="MastHead-title">{ headerTitle }</a> }
+            <Link ref={(ref) => { this.title = ref; }}
+              to={`/${lang}/${application}/`}
+              className="MastHead-title">
+              {headerTitle}
+            </Link>
+          }
         </header>
         <SearchFormComponent pathname={pathname} query={query} />
       </div>

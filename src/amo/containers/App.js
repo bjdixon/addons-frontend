@@ -3,6 +3,7 @@
 import React, { PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
+import { Link as ReactRouterLink } from 'react-router';
 import { compose } from 'redux';
 
 import 'core/fonts/fira.scss';
@@ -15,6 +16,7 @@ import MastHead from 'amo/components/MastHead';
 
 export class AppBase extends React.Component {
   static propTypes = {
+    application: PropTypes.string.isRequired,
     children: PropTypes.node,
     handleLogIn: PropTypes.func.isRequired,
     i18n: PropTypes.object.isRequired,
@@ -40,13 +42,14 @@ export class AppBase extends React.Component {
   }
 
   render() {
-    const { MastHeadComponent, children, i18n, lang, location } = this.props;
+    const { MastHeadComponent, application, children, i18n, lang,
+            location } = this.props;
     const query = location.query ? location.query.q : null;
     return (
       <div className="amo">
         <Helmet defaultTitle={i18n.gettext('Add-ons for Firefox')} />
         <MastHeadComponent SearchFormComponent={SearchForm} lang={lang}
-                           query={query}>
+                           application={application} query={query}>
           {this.accountButton()}
         </MastHeadComponent>
         {children}
@@ -55,8 +58,10 @@ export class AppBase extends React.Component {
   }
 }
 
-export const setupMapStateToProps = (_window) => (state) => ({
+export const setupMapStateToProps = (_window) => (state, ownProps) => ({
+  application: ownProps.params.application,
   lang: state.api.lang,
+  params: state.params,
   isAuthenticated: !!state.auth.token,
   handleLogIn(location) {
     // eslint-disable-next-line no-param-reassign

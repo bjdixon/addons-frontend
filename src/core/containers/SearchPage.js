@@ -6,10 +6,6 @@ import { searchStart, searchLoad, searchFail } from 'core/actions/search';
 
 export function mapStateToProps(state, ownProps) {
   const { location } = ownProps;
-  const app = state.api.app || state.api.application;
-  console.log('\n\n\n\n\n\n');
-  console.log(app);
-  console.log('\n\n\n\n\n\n');
   const lang = state.api.lang;
   if (location.query.q === state.search.query ||
       location.query.category === location.search.category) {

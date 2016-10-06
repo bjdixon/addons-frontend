@@ -10,7 +10,7 @@ export class CategoriesBase extends React.Component {
   }
 
   render() {
-    const { i18n } = this.props;
+    const { application, i18n, lang } = this.props;
 
     const categories = {
       firefox: {
@@ -37,7 +37,12 @@ export class CategoriesBase extends React.Component {
     const categoriesHTML = (
       <ul className="Categories-list" ref={(ref) => { this.categories = ref; }}>
         {categories.firefox.extensions.map((category) => {
-          return <li><CategoryLink {...category} /></li>;
+          return (
+            <li>
+              <CategoryLink application={application} lang={lang}
+                {...category} />
+            </li>
+          );
         })}
       </ul>
     );
