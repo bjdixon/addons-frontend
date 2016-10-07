@@ -10,6 +10,7 @@ import SearchResult from './SearchResult';
 
 class SearchResults extends React.Component {
   static propTypes = {
+    CategoryInfoComponent: PropTypes.object.isRequired,
     ResultComponent: PropTypes.object.isRequired,
     app: PropTypes.string,
     category: PropTypes.string,
@@ -25,20 +26,27 @@ class SearchResults extends React.Component {
   static defaultProps = {
     // app: null,
     // category: null,
+    CategoryInfoComponent: null,
+    ResultComponent: SearchResult,
     count: 0,
     query: null,
-    ResultComponent: SearchResult,
     results: [],
     // type: null,
   }
 
   render() {
-    const { ResultComponent, app, category, count, i18n, lang, loading, query,
-            results, type } = this.props;
+    const { CategoryInfoComponent, ResultComponent, app, category, count, i18n,
+            lang, loading, query, results, type } = this.props;
 
     let searchResults;
     let messageText;
     let hideMessageText = false;
+
+    let resultHeader;
+
+    if (category && CategoryInfoComponent) {
+      resultHeader = <CategoryInfoComponent slug={category} />
+    }
 
     if (count > 0) {
       hideMessageText = true;
@@ -76,6 +84,7 @@ class SearchResults extends React.Component {
     return (
       <div ref={(ref) => { this.container = ref; }} className="SearchResults">
         {message}
+        {resultHeader}
         {searchResults}
       </div>
     );
