@@ -9,6 +9,7 @@ import SearchResult from './SearchResult';
 
 export default class SearchPage extends React.Component {
   static propTypes = {
+    application: PropTypes.string.isRequired,
     category: PropTypes.string,
     count: PropTypes.number,
     lang: PropTypes.string.isRequired,
@@ -19,15 +20,17 @@ export default class SearchPage extends React.Component {
   }
 
   render() {
-    const { category, count, lang, loading, page, query, results } = this.props;
-    const pathname = `/${lang}/firefox/search/`;
+    const { application, category, count, lang, loading, page, query,
+            results } = this.props;
+    const pathname = `/${lang}/${application}/search/`;
     const paginator = query && count > 0 ?
       <Paginate count={count} pathname={pathname} query={{ q: query }} currentPage={page} /> : [];
     return (
       <div className="search-page">
         <SearchResults results={results} query={query} loading={loading}
-          category={category} count={count} lang={lang}
-          CategoryInfoComponent={CategoryInfo} ResultComponent={SearchResult} />
+          application={application} category={category} count={count}
+          lang={lang} CategoryInfoComponent={CategoryInfo}
+          ResultComponent={SearchResult} />
         {paginator}
       </div>
     );

@@ -6,12 +6,14 @@ import { searchStart, searchLoad, searchFail } from 'core/actions/search';
 
 export function mapStateToProps(state, ownProps) {
   const { location } = ownProps;
+  const ( application ) = ownProps.params;
   const lang = state.api.lang;
-  if (location.query.q === state.search.query ||
-      location.query.category === location.search.category) {
-    return { lang, ...state.search };
+
+  if (location.query.q === state.search.query) {
+    return { application, lang, ...state.search };
   }
-  return { lang };
+
+  return { application, lang };
 }
 
 function performSearch({ dispatch, page, query, api, auth = false,
