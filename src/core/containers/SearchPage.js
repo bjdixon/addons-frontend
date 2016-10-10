@@ -6,7 +6,7 @@ import { searchStart, searchLoad, searchFail } from 'core/actions/search';
 
 export function mapStateToProps(state, ownProps) {
   const { location } = ownProps;
-  const ( application ) = ownProps.params;
+  const { application } = ownProps.params;
   const lang = state.api.lang;
 
   if (location.query.q === state.search.query) {
