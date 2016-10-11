@@ -30,6 +30,7 @@ describe('MastHead', () => {
 
   it('renders a heading when isHomepage is true', () => {
     const root = renderMastHead({
+      application: 'firefox',
       isHomePage: true,
       children: FakeChild,
       lang: 'en-GB',
@@ -41,6 +42,7 @@ describe('MastHead', () => {
 
   it('renders a link when isHomepage is false', () => {
     const root = renderMastHead({
+      application: 'firefox',
       isHomePage: false,
       children: FakeChild,
       lang: 'en-GB',

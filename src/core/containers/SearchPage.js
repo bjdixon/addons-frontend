@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-connect';
 
+import { OPTIONAL_SEARCH_PARAMS } from 'amo/constants';
 import { search } from 'core/api';
 import { searchStart, searchLoad, searchFail } from 'core/actions/search';
 
@@ -16,17 +17,25 @@ export function mapStateToProps(state, ownProps) {
   return { application, lang };
 }
 
-function performSearch({ dispatch, page, query, api, auth = false,
-  app, addonType, category
+function performSearch({
+  dispatch, page, api, auth = false, app, addonType, category, query,
 }) {
-  if (!query && !(category && app && addonType)) {
+  let params = {};
+  OPTIONAL_SEARCH_PARAMS.forEach((param) => {
+    if (arguments[0][param] !== undefined) {
+      params[param] = arguments[0][param];
+    }
+  });
+
+  // If none of the optional search params are found, we aren't searching for
+  if (Object.keys(params).length === 0) {
     return Promise.resolve();
   }
-  dispatch(searchStart(query, page, app, addonType, category));
-  return search({ page, query, api, auth, app, category, type: addonType })
-    .then((response) => dispatch(searchLoad({ page, query, app, addonType,
-      category, ...response })))
-    .catch(() => dispatch(searchFail({ page, query, app, addonType, category })));
+
+  dispatch(searchStart({ page, ...params }));
+  return search({ page, api, auth, ...params })
+    .then((response) => dispatch(searchLoad({ page, ...params, ...response })))
+    .catch(() => dispatch(searchFail({ page, ...params })));
 }
 
 export function isLoaded({ page, query, app, addonType, category, state }) {
@@ -49,7 +58,8 @@ export function loadSearchResultsIfNeeded({ store: { dispatch, getState }, locat
   const state = getState();
   if (!isLoaded({ state: state.search, query, page, app, addonType, category
     })) {
-    return performSearch({ dispatch, page, query, api: state.api, auth: state.auth, app, addonType, category });
+    return performSearch({ dispatch, page, api: state.api, auth: state.auth,
+      app, addonType, category, query });
   }
   return true;
 }

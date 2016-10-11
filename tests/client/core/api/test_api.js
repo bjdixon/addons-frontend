@@ -32,7 +32,7 @@ describe('api', () => {
       // FIXME: This shouldn't fail if the args are in a different order.
       mockWindow.expects('fetch')
         .withArgs(
-          'https://addons.mozilla.org/api/v3/addons/search/?q=foo&page=3&lang=en-US')
+          'https://addons.mozilla.org/api/v3/addons/search/?q=foo&page=3&app=&category=&type=&lang=en-US')
         .once()
         .returns(mockResponse());
       return api.search({
@@ -61,7 +61,7 @@ describe('api', () => {
 
     it('surfaces status and apiURL on Error instance', () => {
       const url =
-        'https://addons.mozilla.org/api/v3/addons/search/?q=foo&page=3&lang=en-US';
+        'https://addons.mozilla.org/api/v3/addons/search/?q=foo&page=3&app=&category=&type=&lang=en-US';
       mockWindow.expects('fetch')
         .withArgs(url)
         .once()
@@ -100,7 +100,7 @@ describe('api', () => {
       // FIXME: This shouldn't fail if the args are in a different order.
       mockWindow.expects('fetch')
         .withArgs(
-          'https://addons.mozilla.org/api/v3/addons/search/?q=foo&page=3&lang=en-US')
+          'https://addons.mozilla.org/api/v3/addons/search/?q=foo&page=3&app=&category=&type=&lang=en-US')
         .once()
         .returns(mockResponse());
       return api.search({ api: { lang: 'en-US' }, query: 'foo', page: 3 })

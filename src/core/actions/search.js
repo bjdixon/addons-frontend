@@ -1,20 +1,44 @@
-export function searchStart(query, page, app, addonType, category) {
+import { OPTIONAL_SEARCH_PARAMS } from 'amo/constants';
+
+
+export function searchStart({ page, query, app, addonType, category }) {
+  let params = { page };
+  OPTIONAL_SEARCH_PARAMS.forEach((param) => {
+    if (arguments[0][param] !== undefined) {
+      params[param] = arguments[0][param];
+    }
+  });
+
   return {
     type: 'SEARCH_STARTED',
-    payload: { page, query, app, addonType, category },
+    payload: params,
   };
 }
 
 export function searchLoad({ query, entities, result, app, category, addonType }) {
+  let params = { entities, result };
+  OPTIONAL_SEARCH_PARAMS.forEach((param) => {
+    if (arguments[0][param] !== undefined) {
+      params[param] = arguments[0][param];
+    }
+  });
+
   return {
     type: 'SEARCH_LOADED',
-    payload: { entities, query, result, app, category, addonType },
+    payload: params,
   };
 }
 
 export function searchFail({ page, query, app, category, addonType }) {
+  let params = { page };
+  OPTIONAL_SEARCH_PARAMS.forEach((param) => {
+    if (arguments[0][param] !== undefined) {
+      params[param] = arguments[0][param];
+    }
+  });
+
   return {
     type: 'SEARCH_FAILED',
-    payload: { page, query, app, category, addonType },
+    payload: params,
   };
 }

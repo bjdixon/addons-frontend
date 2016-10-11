@@ -16,13 +16,13 @@ describe('Search.mapStateToProps()', () => {
   };
 
   it('passes the search state if the URL and state query matches', () => {
-    const props = mapStateToProps(state, { location: { query: { q: 'ad-block' } } });
-    assert.deepEqual(props, { lang: 'fr-CA', ...state.search });
+    const props = mapStateToProps(state, { location: { query: { q: 'ad-block' } }, params: { application: 'firefox' } });
+    assert.deepEqual(props, { application: 'firefox', lang: 'fr-CA', ...state.search });
   });
 
   it('does not pass search state if the URL and state query do not match', () => {
-    const props = mapStateToProps(state, { location: { query: { q: 'more-ads' } } });
-    assert.deepEqual(props, { lang: 'fr-CA' });
+    const props = mapStateToProps(state, { location: { query: { q: 'more-ads' } }, params: { application: 'firefox' } });
+    assert.deepEqual(props, { application: 'firefox', lang: 'fr-CA' });
   });
 });
 
@@ -129,7 +129,7 @@ describe('CurrentSearchPage.loadSearchResultsIfNeeded()', () => {
       mockApi.verify();
       assert(
         dispatch.firstCall.calledWith(
-          searchActions.searchStart(query, page)),
+          searchActions.searchStart({ query, page })),
           'searchStart not called');
       assert(
         dispatch.secondCall.calledWith(
@@ -158,7 +158,7 @@ describe('CurrentSearchPage.loadSearchResultsIfNeeded()', () => {
       mockApi.verify();
       assert(
         dispatch.firstCall.calledWith(
-          searchActions.searchStart(query, page)),
+          searchActions.searchStart({ query, page })),
           'searchStart not called');
       assert(
         dispatch.secondCall.calledWith(

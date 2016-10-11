@@ -1,3 +1,6 @@
+import { OPTIONAL_SEARCH_PARAMS } from 'amo/constants';
+
+
 const initialState = {
   count: 0,
   loading: false,
@@ -8,32 +11,43 @@ const initialState = {
 
 export default function search(state = initialState, action) {
   const { payload } = action;
+  let params;
+
   switch (action.type) {
     case 'SET_QUERY':
-      return { ...state, query: payload.query, app: payload.app, category:
-               payload.category, addonType: payload.addonType };
+      params = { ...state };
+      OPTIONAL_SEARCH_PARAMS.forEach((param) => {
+        if (payload[param] !== undefined) {
+          params[param] = payload[param];
+        }
+      });
+
+      return params;
     case 'SEARCH_STARTED':
       return { ...state, ...payload, count: 0, loading: true, results: [] };
     case 'SEARCH_LOADED':
-      return {
+      params = {
         ...state,
-        app: payload.app,
-        category: payload.category,
-        addonType: payload.addonType,
         count: payload.result.count,
         loading: false,
-        query: payload.query,
         results: payload.result.results.map((slug) => payload.entities.addons[slug]),
       };
+      OPTIONAL_SEARCH_PARAMS.forEach((param) => {
+        if (payload[param] !== undefined) {
+          params[param] = payload[param];
+        }
+      });
+
+      return params;
     case 'SEARCH_FAILED':
-      return {
-        ...initialState,
-        app: payload.app,
-        category: payload.category,
-        addonType: payload.addonType,
-        page: payload.page,
-        query: payload.query,
-      };
+      params = { ...initialState, page: payload.page };
+      OPTIONAL_SEARCH_PARAMS.forEach((param) => {
+        if (payload[param] !== undefined) {
+          params[param] = payload[param];
+        }
+      });
+
+      return params;
     default:
       return state;
   }

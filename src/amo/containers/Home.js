@@ -15,7 +15,8 @@ export class HomeBase extends React.Component {
 
     return (
       <div>
-        <Link to={`/${lang}/${application}/categories/`}>
+        <Link to={`/${lang}/${application}/categories/`}
+          ref={(ref) => { this.categoryLink = ref; }}>
           {i18n.gettext('Categories')}
         </Link>
       </div>

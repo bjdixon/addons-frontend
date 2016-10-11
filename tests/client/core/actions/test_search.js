@@ -1,7 +1,7 @@
 import * as actions from 'core/actions/search';
 
 describe('SEARCH_STARTED', () => {
-  const action = actions.searchStart('foo', 5);
+  const action = actions.searchStart({ query: 'foo', page: 5 });
 
   it('sets the type', () => {
     assert.equal(action.type, 'SEARCH_STARTED');
@@ -27,7 +27,7 @@ describe('SEARCH_LOADED', () => {
 });
 
 describe('SEARCH_FAILED', () => {
-  const action = actions.searchFail({ query: 'foo', page: 25 });
+  const action = actions.searchFail({ page: 25, query: 'foo' });
 
   it('sets the type', () => {
     assert.equal(action.type, 'SEARCH_FAILED');

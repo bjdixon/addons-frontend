@@ -15,8 +15,7 @@ function makeQueryString(query) {
   return url.format({ query });
 }
 
-export function callApi({ endpoint, schema, params = {}, auth = false, state = {}, method = 'get',
-                         body, credentials }) {
+export function callApi({ endpoint, schema, params = {}, auth = false, state = {}, method = 'get', body, credentials }) {
   const queryString = makeQueryString({ ...params, lang: state.lang });
   const options = {
     headers: {},
@@ -55,12 +54,12 @@ export function callApi({ endpoint, schema, params = {}, auth = false, state = {
     .then((response) => (schema ? normalize(response, schema) : response));
 }
 
-export function search({ api, page, query, auth = false, app, category, type }) {
+export function search({ api, page, query, auth = false, app, category, addonType }) {
   // TODO: Get the language from the server.
   return callApi({
     endpoint: 'addons/search',
     schema: { results: arrayOf(addon) },
-    params: { q: query, page, app, category, type },
+    params: { q: query, page, app, category, type: addonType },
     state: api,
     auth,
   });

@@ -16,6 +16,7 @@ describe('<SearchPage />', () => {
 
   beforeEach(() => {
     props = {
+      application: 'firefox',
       count: 80,
       page: 3,
       handleSearch: sinon.spy(),
@@ -30,16 +31,20 @@ describe('<SearchPage />', () => {
   it('renders the results', () => {
     const root = render();
     const results = findByTag(root, SearchResults);
+    assert.strictEqual(results.props.application, props.application);
     assert.strictEqual(results.props.count, props.count);
     assert.strictEqual(results.props.lang, props.lang);
     assert.strictEqual(results.props.results, props.results);
     assert.strictEqual(results.props.query, props.query);
     assert.strictEqual(results.props.loading, props.loading);
     assert.strictEqual(results.props.ResultComponent, props.ResultComponent);
+    console.log('\n\n\n\n\n\n\n');
+    console.log(results.props);
+    console.log('\n\n\n\n\n\n\n');
     assert.deepEqual(
-      Object.keys(results.props).sort(),
-        ['count', 'lang', 'loading', 'results', 'ResultComponent',
-         'query'].sort());
+      Object.keys(results.props).sort(), [
+        'ResultComponent', 'application', 'addonType', 'category', 'count', 'lang', 'loading', 'results', 'query'].sort()
+      );
   });
 
   it('renders a Paginate', () => {
